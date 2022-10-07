@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -28,11 +29,31 @@ class Login extends React.Component {
     });
   };
 
-  handleClick = () => {
+  handleClick = async () => {
+    const endpoint = 'https://opentdb.com/api_token.php?command=request';
+    const request = await fetch(endpoint);
+    const response = await request.json();
+    const { token } = response;
+    this.dispatchTokenToLocalStorage(token);
+    const { history } = this.props;
+    history.push('/game');
+  };
+
+  handleSettings = () => {
+    const { history } = this.props;
+    history.push('/configuracoes');
+  };
+
+  dispatchTokenToLocalStorage = (token) => {
+    localStorage.setItem('token', token);
   };
 
   render() {
-    const { name, gravatarEmail, disabled } = this.state;
+    const {
+      name,
+      gravatarEmail,
+      disabled,
+    } = this.state;
     return (
       <div>
         <Input
@@ -58,13 +79,27 @@ class Login extends React.Component {
           datatestid="btn-play"
           name="loginBtn"
           value={ name }
-          onChange={ this.handleClick }
+          onClick={ this.handleClick }
         >
           Play
+        </Button>
+        <Button
+          datatestid="btn-settings"
+          name="settingsBtn"
+          value={ name }
+          onClick={ this.handleSettings }
+        >
+          Settings
         </Button>
       </div>
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Login;
