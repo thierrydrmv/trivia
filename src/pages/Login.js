@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { stateAction } from '../Redux/Actions';
+import { stateAction } from '../redux/actions';
 
 class Login extends React.Component {
   state = {

@@ -1,4 +1,4 @@
-import { LOGIN_DATA } from '../Actions/actionTypes';
+import { LOGIN_DATA } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   name: '',
