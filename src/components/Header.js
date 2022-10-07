@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
@@ -35,6 +36,14 @@ class Header extends Component {
     );
   }
 }
+
+Header.propTypes = {
+  perfilData: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    score: PropTypes.number.isRequired,
+    gravatarEmail: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 const mapStateToProps = (state) => ({
   perfilData: state.loginReducer,
