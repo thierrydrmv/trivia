@@ -1,5 +1,5 @@
 import React from "react";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import renderWithRouterAndRedux from "./renderWithRouterAndRedux";
 import App from '../../App';
@@ -26,7 +26,19 @@ it('Test if after clicking the play button, it redirects to the game page', asyn
     
     const count = await screen.findByText('0');
     expect(count).toBeInTheDocument();
+    await waitFor(() => {
+      const { location: { pathname } } = history;
+      expect(pathname).toBe('/game');
+    })
+ });
  
- });   
+ it('Testa se é redirecionado para a página settings', () => {
+  const { history } = renderWithRouterAndRedux(<App />);
+  const settingsBtn = screen.getByRole('button', {  name: /settings/i});
+  userEvent.click(settingsBtn);
+  const { location: { pathname } } = history;
+  expect(pathname).toBe('/configuracoes');
+
+ })
 
 });
