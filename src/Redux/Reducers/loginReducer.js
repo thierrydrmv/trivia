@@ -1,8 +1,9 @@
 import { LOGIN_DATA } from '../Actions/actionTypes';
 
 const INITIAL_STATE = {
-  email: '',
+  name: '',
   gravatarEmail: '',
+  score: 0,
 };
 
 export default function loginReducer(state = INITIAL_STATE, action) {
@@ -10,7 +11,7 @@ export default function loginReducer(state = INITIAL_STATE, action) {
   case LOGIN_DATA:
     return {
       ...state,
-      email: action.state.email,
+      name: action.state.name,
       gravatarEmail: action.state.gravatarEmail,
     };
   default:
