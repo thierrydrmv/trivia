@@ -3,7 +3,16 @@ import React from 'react';
 
 export default class Button extends React.Component {
   render() {
-    const { onClick, value, name, children, datatestid, disabled, key } = this.props;
+    const {
+      onClick,
+      value,
+      name,
+      children,
+      datatestid,
+      disabled,
+      key,
+      className,
+    } = this.props;
     return (
       <button
         type="button"
@@ -14,8 +23,9 @@ export default class Button extends React.Component {
         id={ name }
         disabled={ disabled }
         key={ key }
+        className={ className }
       >
-        { children }
+        {children}
       </button>
     );
   }
@@ -29,4 +39,5 @@ Button.propTypes = {
   name: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
 };
