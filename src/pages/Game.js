@@ -9,6 +9,8 @@ class Game extends Component {
     questions: [],
     index: 0,
     triggerButton: false,
+    timer: 30,
+    disabled: false,
   };
 
   componentDidMount() {
@@ -53,7 +55,7 @@ class Game extends Component {
 
       return this.setState({
         questions: obj,
-      });
+      }, () => this.handleTimer());
     }
     return null;
   };
@@ -64,8 +66,25 @@ class Game extends Component {
     });
   };
 
+  handleTimer = () => {
+    const timerSec = 1000;
+    const timerForGame = setInterval(() => {
+      this.setState((prevState) => ({
+        timer: prevState.timer - 1,
+      }), () => {
+        const { timer } = this.state;
+        if (timer === 0) {
+          clearInterval(timerForGame);
+          this.setState({
+            disabled: true,
+          });
+        }
+      });
+    }, timerSec);
+  };
+
   render() {
-    const { results, index, questions, triggerButton } = this.state;
+    const { results, index, questions, triggerButton, timer, disabled } = this.state;
     if (results.length > 0) {
       this.fetchQuestions();
     }
@@ -74,6 +93,7 @@ class Game extends Component {
         <Header />
         {results.length > 0 && (
           <div>
+            <p>{ timer }</p>
             <p data-testid="question-category">{results[index].category}</p>
             <p data-testid="question-text">{results[index].question}</p>
             <div data-testid="answer-options">
@@ -87,6 +107,7 @@ class Game extends Component {
                   }
                   className={ triggerButton && e.type }
                   onClick={ this.handleClick }
+                  disabled={ disabled }
                 >
                   {e.answer}
                 </Button>
