@@ -8,6 +8,7 @@ class Game extends Component {
     results: [],
     questions: [],
     index: 0,
+    triggerButton: false,
   };
 
   componentDidMount() {
@@ -57,8 +58,14 @@ class Game extends Component {
     return null;
   };
 
+  handleClick = () => {
+    this.setState({
+      triggerButton: true,
+    });
+  };
+
   render() {
-    const { results, index, questions } = this.state;
+    const { results, index, questions, triggerButton } = this.state;
     if (results.length > 0) {
       this.fetchQuestions();
     }
@@ -78,6 +85,8 @@ class Game extends Component {
                       ? 'correct-answer'
                       : `wrong-answer-${e.indexOfObj}`
                   }
+                  className={ triggerButton && e.type }
+                  onClick={ this.handleClick }
                 >
                   {e.answer}
                 </Button>

@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Game from './pages/Game';
 import Login from './pages/Login';
 import Settings from './pages/Settings';
+import './App.css';
 
 export default class App extends React.Component {
   render() {
