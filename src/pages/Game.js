@@ -26,11 +26,17 @@ class Game extends Component {
   };
 
   fetchResults = async (token) => {
+    const minimumNumber = 10;
+    if (token === null || token.length < minimumNumber) {
+      localStorage.removeItem('token');
+      const { history } = this.props;
+      return history.push('/');
+    }
     const endpoint = `https://opentdb.com/api.php?amount=5&token=${token}`;
     const request = await fetch(endpoint);
     const response = await request.json();
     const { results } = response;
-    if (results.length === 0) {
+    if (results.length === 0 || !results) {
       localStorage.removeItem('token');
       const { history } = this.props;
       return history.push('/');
@@ -153,7 +159,7 @@ class Game extends Component {
         <Header />
         {results.length > 0 && index <= lastQuestion && (
           <div>
-            <p>{timer}</p>
+            <p data-testid="timer">{timer}</p>
             <p data-testid="question-category">{results[index].category}</p>
             <p data-testid="question-text">{results[index].question}</p>
             <div data-testid="answer-options">

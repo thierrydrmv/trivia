@@ -5,30 +5,30 @@ import Header from '../components/Header';
 import Button from '../components/Button';
 
 class Feedback extends React.Component {
-  state = {
-    name: '',
-  };
-
   ranking = () => {
     const { history } = this.props;
     history.push('/ranking');
   };
 
+  playAgain = () => {
+    const { history } = this.props;
+    history.push('/');
+  };
+
   render() {
     const { assertions, score } = this.props;
-    const { name } = this.state;
     const minAssertions = 3;
-    const feedbackText = assertions < minAssertions ? 'Could be better...' : 'Well Done!';
     return (
       <div>
         <Header />
         <p data-testid="feedback-total-score">{score}</p>
         <p data-testid="feedback-total-question">{assertions}</p>
-        <p data-testid="feedback-text">{ feedbackText }</p>
+        <p data-testid="feedback-text">
+          {assertions < minAssertions ? 'Could be better...' : 'Well Done!'}
+        </p>
         <Button
           datatestid="btn-play-again"
           name="playAgain"
-          value={ name }
           onClick={ this.playAgain }
         >
           Play Again
@@ -36,7 +36,6 @@ class Feedback extends React.Component {
         <Button
           datatestid="btn-ranking"
           name="rankingBtn"
-          value={ name }
           onClick={ this.ranking }
         >
           Ranking
