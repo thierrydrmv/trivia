@@ -46,7 +46,7 @@ Header.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  perfilData: state.loginReducer,
+  perfilData: state.player,
 });
 
 export default connect(mapStateToProps)(Header);
