@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Button from '../components/Button';
+import { scoreAction } from '../redux/actions';
 
 class Game extends Component {
   state = {
@@ -39,6 +41,7 @@ class Game extends Component {
 
   fetchQuestions = () => {
     const { results, index, questions } = this.state;
+    console.log(questions);
     if (questions.length === 0) {
       const half = 0.5;
       const arrOfAnswers = [
@@ -50,6 +53,7 @@ class Game extends Component {
           answer: item,
           type: i === 0 ? 'correct' : 'incorrect',
           indexOfObj: i - 1,
+          difficulty: results[index].difficulty,
         }))
         .sort(() => Math.random() - half);
 
@@ -60,7 +64,29 @@ class Game extends Component {
     return null;
   };
 
-  handleClick = () => {
+  handleClick = ({ target }) => {
+    const { name } = target;
+    const { playerInfo: { score }, dispatchScore } = this.props;
+    const { questions, timer } = this.state;
+    if (name === 'correct') {
+      const minimumPoints = 10;
+      let difficultyAvaliation = 0;
+      const requestedTimer = 17;
+      if (questions[0].difficulty === 'hard') {
+        const hardN = 3;
+        difficultyAvaliation = hardN;
+      }
+      if (questions[0].difficulty === 'medium') {
+        const mediumN = 2;
+        difficultyAvaliation = mediumN;
+      }
+      if (questions[0].difficulty === 'easy') {
+        const easyN = 1;
+        difficultyAvaliation = easyN;
+      }
+      const totalScore = minimumPoints + (timer * difficultyAvaliation);
+      dispatchScore(totalScore);
+    }
     this.setState({
       triggerButton: true,
     });
@@ -105,6 +131,7 @@ class Game extends Component {
                       ? 'correct-answer'
                       : `wrong-answer-${e.indexOfObj}`
                   }
+                  name={ e.type }
                   className={ triggerButton && e.type }
                   onClick={ this.handleClick }
                   disabled={ disabled }
@@ -126,4 +153,12 @@ Game.propTypes = {
   }).isRequired,
 };
 
-export default Game;
+const mapStateToProps = (state) => ({
+  playerInfo: state.player,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchScore: (state) => dispatch(scoreAction(state)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
