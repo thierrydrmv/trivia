@@ -66,12 +66,11 @@ class Game extends Component {
 
   handleClick = ({ target }) => {
     const { name } = target;
-    const { playerInfo: { score }, dispatchScore } = this.props;
+    const { dispatchScore } = this.props;
     const { questions, timer } = this.state;
     if (name === 'correct') {
       const minimumPoints = 10;
       let difficultyAvaliation = 0;
-      const requestedTimer = 17;
       if (questions[0].difficulty === 'hard') {
         const hardN = 3;
         difficultyAvaliation = hardN;
@@ -148,6 +147,7 @@ class Game extends Component {
 }
 
 Game.propTypes = {
+  dispatchScore: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
