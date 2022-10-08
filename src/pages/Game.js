@@ -44,6 +44,12 @@ class Game extends Component {
   };
 
   nextQuestion = () => {
+    const lastQuestion = 4;
+    const { index } = this.state;
+    if (index === lastQuestion) {
+      const { history } = this.props;
+      history.push('/feedback');
+    }
     this.setState(
       (prevState) => ({
         index: prevState.index + 1,
@@ -135,10 +141,11 @@ class Game extends Component {
 
   render() {
     const { results, index, questions, triggerButton, timer, disabled } = this.state;
+    const lastQuestion = 4;
     return (
       <div>
         <Header />
-        {results.length > 0 && (
+        {results.length > 0 && index <= lastQuestion && (
           <div>
             <p>{timer}</p>
             <p data-testid="question-category">{results[index].category}</p>
