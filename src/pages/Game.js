@@ -13,6 +13,7 @@ class Game extends Component {
     triggerButton: false,
     timer: 30,
     disabled: false,
+    nextQ: false,
   };
 
   componentDidMount() {
@@ -34,34 +35,49 @@ class Game extends Component {
       const { history } = this.props;
       return history.push('/');
     }
-    return this.setState({
-      results,
-    });
+    return this.setState(
+      {
+        results,
+      },
+      () => this.fetchQuestions(),
+    );
+  };
+
+  nextQuestion = () => {
+    this.setState(
+      (prevState) => ({
+        index: prevState.index + 1,
+      }),
+      () => this.fetchQuestions(),
+    );
   };
 
   fetchQuestions = () => {
-    const { results, index, questions } = this.state;
-    console.log(questions);
-    if (questions.length === 0) {
-      const half = 0.5;
-      const arrOfAnswers = [
-        results[index].correct_answer,
-        ...results[index].incorrect_answers,
-      ];
-      const obj = arrOfAnswers
-        .map((item, i) => ({
-          answer: item,
-          type: i === 0 ? 'correct' : 'incorrect',
-          indexOfObj: i - 1,
-          difficulty: results[index].difficulty,
-        }))
-        .sort(() => Math.random() - half);
+    const { results, index } = this.state;
+    const half = 0.5;
+    const arrOfAnswers = [
+      results[index].correct_answer,
+      ...results[index].incorrect_answers,
+    ];
+    const obj = arrOfAnswers
+      .map((item, i) => ({
+        answer: item,
+        type: i === 0 ? 'correct' : 'incorrect',
+        indexOfObj: i - 1,
+        difficulty: results[index].difficulty,
+      }))
+      .sort(() => Math.random() - half);
 
-      return this.setState({
+    this.setState(
+      {
         questions: obj,
-      }, () => this.handleTimer());
-    }
-    return null;
+        timer: 30,
+        triggerButton: false,
+        disabled: false,
+        nextQ: false,
+      },
+      () => this.handleTimer(),
+    );
   };
 
   handleClick = ({ target }) => {
@@ -83,42 +99,48 @@ class Game extends Component {
         const easyN = 1;
         difficultyAvaliation = easyN;
       }
-      const totalScore = minimumPoints + (timer * difficultyAvaliation);
+      const totalScore = minimumPoints + timer * difficultyAvaliation;
       dispatchScore(totalScore);
     }
     this.setState({
       triggerButton: true,
+      nextQ: true,
+      disabled: true,
     });
   };
 
   handleTimer = () => {
     const timerSec = 1000;
     const timerForGame = setInterval(() => {
-      this.setState((prevState) => ({
-        timer: prevState.timer - 1,
-      }), () => {
-        const { timer } = this.state;
-        if (timer === 0) {
-          clearInterval(timerForGame);
-          this.setState({
-            disabled: true,
-          });
-        }
-      });
+      const { nextQ } = this.state;
+      if (nextQ) {
+        clearInterval(timerForGame);
+      }
+      this.setState(
+        (prevState) => ({
+          timer: prevState.timer - 1,
+        }),
+        () => {
+          const { timer } = this.state;
+          if (timer === 0) {
+            clearInterval(timerForGame);
+            this.setState({
+              disabled: true,
+            });
+          }
+        },
+      );
     }, timerSec);
   };
 
   render() {
     const { results, index, questions, triggerButton, timer, disabled } = this.state;
-    if (results.length > 0) {
-      this.fetchQuestions();
-    }
     return (
       <div>
         <Header />
         {results.length > 0 && (
           <div>
-            <p>{ timer }</p>
+            <p>{timer}</p>
             <p data-testid="question-category">{results[index].category}</p>
             <p data-testid="question-text">{results[index].question}</p>
             <div data-testid="answer-options">
@@ -139,6 +161,11 @@ class Game extends Component {
                 </Button>
               ))}
             </div>
+            {triggerButton && (
+              <Button datatestid="btn-next" onClick={ this.nextQuestion }>
+                Next
+              </Button>
+            )}
           </div>
         )}
       </div>
