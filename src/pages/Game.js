@@ -105,8 +105,14 @@ class Game extends Component {
         const easyN = 1;
         difficultyAvaliation = easyN;
       }
-      const totalScore = minimumPoints + timer * difficultyAvaliation;
-      dispatchScore(totalScore);
+      const totalScore = minimumPoints + (timer * difficultyAvaliation);
+
+      const obj = {
+        score: totalScore,
+        assertions: 1,
+      };
+
+      dispatchScore(obj);
     }
     this.setState({
       triggerButton: true,

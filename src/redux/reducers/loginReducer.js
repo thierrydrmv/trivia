@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   name: '',
   gravatarEmail: '',
   score: 0,
+  assertions: 0,
 };
 
 export default function player(state = INITIAL_STATE, action) {
@@ -17,7 +18,8 @@ export default function player(state = INITIAL_STATE, action) {
   case SCORE_DATA:
     return {
       ...state,
-      score: state.score + action.state,
+      score: state.score + action.state.score,
+      assertions: state.assertions + action.state.assertions,
     };
   default:
     return state;
