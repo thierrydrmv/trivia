@@ -3,9 +3,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouterAndRedux from './renderWithRouterAndRedux';
 import App from '../../App';
-import Feedback from '../../pages/Feedback';
-import { act } from 'react-dom/test-utils';
-import mockData from './mockData';
+import { questionsResponse } from './mockData';
 
 describe('Testa página de Game', () => {
   afterEach(() => {
@@ -56,6 +54,38 @@ describe('Testa página de Game', () => {
     expect(localStorageItem).toBe('aaaa');
     const { history } = renderWithRouterAndRedux(<App />, {}, '/game');
     expect(history.location.pathname).toBe('/');
-    
+  });
+  it('Testa localStorage com results vazio', () =>{
+    global.fetch = jest.fn(() =>
+    Promise.resolve({
+    json: () => Promise.resolve({ results: [], }),
   })
+);
+    global.localStorage.setItem('token', '76a79a1fb48d8c60dad589b954301f9ea77588e5698c88fad153fc2553fec223');
+    renderWithRouterAndRedux(<App />, {}, '/game');
+  })
+
+  it('Test disable button', async () => {
+    global.localStorage.setItem('token', '76a79a1fb48d8c60dad589b954301f9ea77588e5698c88fad153fc2553fec223');
+    global.fetch = jest.fn(() => Promise.resolve({
+        json: () => Promise.resolve(questionsResponse),
+    }));
+    renderWithRouterAndRedux(<App />, {}, '/game');
+    jest.spyOn(global, 'clearInterval');
+    jest.useFakeTimers();
+    await waitFor(() => {
+      const timer = screen.getByTestId('timer');
+      expect(timer.innerHTML).toEqual('0');
+      const btnQuestionCorrect = screen.getByTestId('correct-answer');
+      expect(btnQuestionCorrect).toBeDisabled();
+    }, { timeout: 32000 })
+      const btnNext = screen.getByRole('button', {  name: /next/i });
+      expect(btnNext).toBeInTheDocument();
+      userEvent.click(btnNext);
+      const btnQuestionCorrect = screen.getByTestId('correct-answer');
+      expect(btnQuestionCorrect).toBeInTheDocument()
+      userEvent.click(btnQuestionCorrect);
+
+  });
+
 });

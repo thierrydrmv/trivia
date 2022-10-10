@@ -15,4 +15,17 @@ describe('Testa os funcionamentos da tela de Ranking', () => {
     userEvent.click(homeBtn);
     expect(history.location.pathname).toBe('/');
   })
+  it('Testa funcionalidades da página de ranking', () => {
+    const obj = [{
+      name: 'grupo27',
+    gravatarEmail: 'grupo27@trybe.com',
+    score: 145,
+    assertions: 3,
+    gravatarAvatar: '',
+    }]
+    global.localStorage.setItem('players', JSON.stringify(obj));
+    renderWithRouterAndRedux(<App />, {}, '/ranking');
+    const nameValue = screen.getByTestId('player-name-0');
+    expect(nameValue.innerHTML).toEqual('grupo27');
+  })
 })

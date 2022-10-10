@@ -44,4 +44,5 @@ describe('Testa os funcionamentos da tela de Feedback', () => {
       userEvent.click(playAgainBtn);
       expect(history.location.pathname).toBe('/');
     })
+    
 })
