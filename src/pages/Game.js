@@ -11,9 +11,8 @@ class Game extends Component {
     questions: [],
     index: 0,
     triggerButton: false,
-    timer: 30,
+    timer: 10,
     disabled: false,
-    nextQ: false,
   };
 
   componentDidMount() {
@@ -83,10 +82,9 @@ class Game extends Component {
     this.setState(
       {
         questions: obj,
-        timer: 30,
+        timer: 10,
         triggerButton: false,
         disabled: false,
-        nextQ: false,
       },
       () => this.handleTimer(),
     );
@@ -120,20 +118,16 @@ class Game extends Component {
 
       dispatchScore(obj);
     }
+    clearInterval(this.timerForGame);
     this.setState({
       triggerButton: true,
-      nextQ: true,
       disabled: true,
     });
   };
 
   handleTimer = () => {
     const timerSec = 1000;
-    const timerForGame = setInterval(() => {
-      const { nextQ } = this.state;
-      if (nextQ) {
-        clearInterval(timerForGame);
-      }
+    this.timerForGame = setInterval(() => {
       this.setState(
         (prevState) => ({
           timer: prevState.timer - 1,
@@ -141,9 +135,10 @@ class Game extends Component {
         () => {
           const { timer } = this.state;
           if (timer === 0) {
-            clearInterval(timerForGame);
+            clearInterval(this.timerForGame);
             this.setState({
               disabled: true,
+              triggerButton: true,
             });
           }
         },
