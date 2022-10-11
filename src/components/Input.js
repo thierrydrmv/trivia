@@ -30,4 +30,5 @@ Input.propTypes = {
   type: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   datatestid: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
 };
