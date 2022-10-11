@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Button from '../components/Button';
 import star from '../assets/star.gif';
+//
 
 class Feedback extends React.Component {
   ranking = () => {
