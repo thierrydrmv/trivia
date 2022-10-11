@@ -29,18 +29,28 @@ class Header extends Component {
     const { perfilData } = this.props;
     const { hash } = this.state;
     return (
-      <div className='container-fluid d-flex justify-content-end p-3 text-white bg-header shadow-lg'>
-        <div className='d-flex flex-column align-items-center w-25'>
-        <img src={logo} alt='logo' width="80%" />
-        <div className='d-flex gap-3'>
-        <p data-testid="header-player-name" className='fs-5'>{ perfilData.name }</p>
-        <p data-testid="header-score" className='fs-5'>Points: { perfilData.score }</p>
-        </div>
-        <img
-          data-testid="header-profile-picture"
-          src={ `https://www.gravatar.com/avatar/${hash}` }
-          alt="perfil" className='rounded' width={50}
-        />
+      <div
+        className="container-fluid
+      d-flex justify-content-end
+      p-3 text-white bg-header shadow-lg"
+      >
+        <div className="d-flex flex-column align-items-center w-25">
+          <img src={ logo } alt="logo" width="80%" />
+          <div className="d-flex gap-3">
+            <p data-testid="header-player-name" className="fs-5">{ perfilData.name }</p>
+            <p data-testid="header-score" className="fs-5">
+              Points:
+              {' '}
+              { perfilData.score }
+            </p>
+          </div>
+          <img
+            data-testid="header-profile-picture"
+            src={ `https://www.gravatar.com/avatar/${hash}` }
+            alt="perfil"
+            className="rounded"
+            width={ 50 }
+          />
         </div>
       </div>
     );

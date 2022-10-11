@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Input from '../components/Input';
-import Button from '../components/Button';
 import gear from '../assets/gearfill.svg';
-import play from '../assets/play-fill.svg';
 import { stateAction } from '../redux/actions';
 import logo from '../assets/TriviaWaveTitle.png';
 
@@ -22,7 +21,7 @@ class Login extends React.Component {
       {
         [name]: value,
       },
-      () => this.verifyCondition()
+      () => this.verifyCondition(),
     );
   };
 
@@ -50,10 +49,10 @@ class Login extends React.Component {
     history.push('/game');
   };
 
-  handleSettings = () => {
-    const { history } = this.props;
-    history.push('/configuracoes');
-  };
+  // handleSettings = () => {
+  //   const { history } = this.props;
+  //   history.push('/configuracoes');
+  // };
 
   dispatchTokenToLocalStorage = (token) => {
     localStorage.setItem('token', token);
@@ -67,54 +66,60 @@ class Login extends React.Component {
     });
 
     const { name, gravatarEmail, disabled, wSize } = this.state;
+    const windowSize = 1000;
     return (
-      <div className='container'>
-        <div className='d-flex justify-content-center align-items-center flex-column vh-100 gap-3 text-center'>
-          <img src={logo} alt='logo' width='80%' />
-          <div
-            className={`${
-              wSize < 1000 ? 'w-100' : 'w-50'
-            } p-5 border-top rounded text-black bg-div-login`}
+      // <div className="">
+      <div
+        className="d-flex
+        justify-content-center align-items-center
+        flex-column vh-100 gap-3 text-center container"
+      >
+        <img src={ logo } alt="logo" width="80%" />
+        <div
+          className={ `${
+            wSize < windowSize ? 'w-100' : 'w-50'
+          } p-5 border-top rounded text-black bg-div-login` }
+        >
+          <Input
+            datatestid="input-player-name"
+            type="text"
+            name="name"
+            value={ name }
+            onChange={ this.handleChange }
+            className="form-control"
           >
-            <Input
-              datatestid='input-player-name'
-              type='text'
-              name='name'
-              value={name}
-              onChange={this.handleChange}
-              className='form-control'
+            <span className="fs-4">Nome</span>
+          </Input>
+          <Input
+            datatestid="input-gravatar-email"
+            type="text"
+            name="gravatarEmail"
+            value={ gravatarEmail }
+            onChange={ this.handleChange }
+            className="form-control"
+          >
+            <span className="fs-4">E-mail</span>
+          </Input>
+          <div className="d-flex justify-content-center mt-4 gap-4">
+            <button
+              type="button"
+              className={ disabled ? 'disabled-start' : 'start-btn' }
+              onClick={ this.handleClick }
+              disabled={ disabled }
             >
-              <span className='fs-4'>Nome</span>
-            </Input>
-            <Input
-              datatestid='input-gravatar-email'
-              type='text'
-              name='gravatarEmail'
-              value={gravatarEmail}
-              onChange={this.handleChange}
-              className='form-control'
+              START
+            </button>
+
+            <Link
+              to="/configuracoes"
+              alt="engrenagem"
             >
-              <span className='fs-4'>E-mail</span>
-            </Input>
-            <div className='d-flex justify-content-center mt-4 gap-4 teste'>
-              <button
-                className={disabled ? 'disabled-start' : 'start-btn'}
-                onClick={this.handleClick}
-                disabled={disabled}
-              >
-                START
-              </button>
-              <img
-                src={gear}
-                alt='settings'
-                width={45}
-                onClick={this.handleSettings}
-                className='settings-button'
-              />
-            </div>
+              <img src={ gear } width={ 45 } alt="engrenagem" />
+            </Link>
           </div>
         </div>
       </div>
+      // </div>
     );
   }
 }

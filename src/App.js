@@ -10,7 +10,7 @@ import './App.css';
 export default class App extends React.Component {
   render() {
     return (
-      <div className='bg-neon'>
+      <div className="bg-neon">
         <Switch>
           <Route exact path="/" component={ Login } />
           <Route exact path="/configuracoes" component={ Settings } />

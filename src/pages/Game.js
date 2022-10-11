@@ -45,7 +45,7 @@ class Game extends Component {
       {
         results,
       },
-      () => this.fetchQuestions()
+      () => this.fetchQuestions(),
     );
   };
 
@@ -60,7 +60,7 @@ class Game extends Component {
       (prevState) => ({
         index: prevState.index + 1,
       }),
-      () => this.fetchQuestions()
+      () => this.fetchQuestions(),
     );
   };
 
@@ -87,7 +87,7 @@ class Game extends Component {
         triggerButton: false,
         disabled: false,
       },
-      () => this.handleTimer()
+      () => this.handleTimer(),
     );
   };
 
@@ -142,66 +142,71 @@ class Game extends Component {
               triggerButton: true,
             });
           }
-        }
+        },
       );
     }, timerSec);
   };
 
   render() {
-    const { results, index, questions, triggerButton, timer, disabled } =
-      this.state;
+    const { results, index, questions, triggerButton, timer, disabled } = this.state;
     const lastQuestion = 4;
     return (
-      <div className='vh-100'>
+      <div className="vh-100">
         <Header />
         {results.length > 0 && index <= lastQuestion && (
-          <div className='container d-flex flex-column align-items-center game-box py-5 border-start rounded w-50 text-center shadow-lg bg-game text-light text-shadow'>
-            <div className='d-flex justify-content-center align-items-center gap-3'>
-              <p data-testid='timer' className='display-2'>
+          <div
+            className="container
+            d-flex flex-column
+            align-items-center
+            game-box py-5 border-start
+            rounded w-50 text-center shadow-lg bg-game text-light text-shadow"
+          >
+            <div className="d-flex justify-content-center align-items-center gap-3">
+              <p data-testid="timer" className="display-2">
                 {timer}
               </p>
-              <img src={hourglass} alt='hourglass' width={50} />
+              <img src={ hourglass } alt="hourglass" width={ 50 } />
             </div>
-            <p data-testid='question-category' className='fs-2'>
+            <p data-testid="question-category" className="fs-2">
               {results[index].category}
             </p>
-            <p data-testid='question-text' className='fs-4'>
+            <p data-testid="question-text" className="fs-4">
               {results[index].question}
             </p>
-            <div data-testid='answer-options' className='d-flex gap-3'>
-              {questions.map((e) => (
-                <div>
+            <div data-testid="answer-options" className="d-flex gap-3">
+              {questions.map((e, i) => (
+                <div key={ i }>
                   {triggerButton ? (
                     <Button
-                      key={e.indexOfObj}
+                      key={ e.indexOfObj }
                       datatestid={
                         e.type === 'correct'
                           ? 'correct-answer'
                           : `wrong-answer-${e.indexOfObj}`
                       }
-                      name={e.type}
+                      name={ e.type }
                       className={
                         triggerButton && e.type === 'correct'
                           ? 'btn btn-success'
                           : 'btn btn-danger'
                       }
-                      onClick={this.handleClick}
-                      disabled={disabled}
+                      onClick={ this.handleClick }
+                      disabled={ disabled }
                     >
                       {e.answer}
                     </Button>
                   ) : (
                     <Button
-                      key={e.indexOfObj}
+                      key={ e.indexOfObj }
                       datatestid={
                         e.type === 'correct'
                           ? 'correct-answer'
                           : `wrong-answer-${e.indexOfObj}`
                       }
-                      name={e.type}
-                      className='btn btn-secondary'
-                      onClick={this.handleClick}
-                      disabled={disabled}
+                      name={ e.type }
+                      className="btn btn-secondary"
+                      onClick={ this.handleClick }
+                      disabled={ disabled }
                     >
                       {e.answer}
                     </Button>
@@ -211,9 +216,9 @@ class Game extends Component {
             </div>
             {triggerButton && (
               <Button
-                datatestid='btn-next'
-                onClick={this.nextQuestion}
-                className='btn btn-dark mt-3'
+                datatestid="btn-next"
+                onClick={ this.nextQuestion }
+                className="btn btn-dark mt-3"
               >
                 Next
               </Button>
