@@ -3,20 +3,27 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import gear from '../assets/gearfill.svg';
+import play from '../assets/play-fill.svg';
 import { stateAction } from '../redux/actions';
+import logo from '../assets/TriviaWaveTitle.png';
 
 class Login extends React.Component {
   state = {
     name: '',
     gravatarEmail: '',
     disabled: true,
+    wSize: window.innerWidth,
   };
 
   handleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
-    }, () => this.verifyCondition());
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => this.verifyCondition()
+    );
   };
 
   verifyCondition = () => {
@@ -53,48 +60,60 @@ class Login extends React.Component {
   };
 
   render() {
-    const {
-      name,
-      gravatarEmail,
-      disabled,
-    } = this.state;
+    window.addEventListener('resize', () => {
+      this.setState({
+        wSize: window.innerWidth,
+      });
+    });
+
+    const { name, gravatarEmail, disabled, wSize } = this.state;
     return (
-      <div>
-        <Input
-          datatestid="input-player-name"
-          type="text"
-          name="name"
-          value={ name }
-          onChange={ this.handleChange }
-        >
-          Nome
-        </Input>
-        <Input
-          datatestid="input-gravatar-email"
-          type="text"
-          name="gravatarEmail"
-          value={ gravatarEmail }
-          onChange={ this.handleChange }
-        >
-          E-mail
-        </Input>
-        <Button
-          disabled={ disabled }
-          datatestid="btn-play"
-          name="loginBtn"
-          value={ name }
-          onClick={ this.handleClick }
-        >
-          Play
-        </Button>
-        <Button
-          datatestid="btn-settings"
-          name="settingsBtn"
-          value={ name }
-          onClick={ this.handleSettings }
-        >
-          Settings
-        </Button>
+      <div className='container'>
+        <div className='d-flex justify-content-center align-items-center flex-column vh-100 gap-3 text-center'>
+          <img src={logo} alt='logo' width='80%' />
+          <div
+            className={`${
+              wSize < 1000 ? 'w-100' : 'w-50'
+            } p-5 border-top rounded text-black bg-div-login`}
+          >
+            <Input
+              datatestid='input-player-name'
+              type='text'
+              name='name'
+              value={name}
+              onChange={this.handleChange}
+              className='form-control'
+            >
+              <span className='fs-4'>Nome</span>
+            </Input>
+            <Input
+              datatestid='input-gravatar-email'
+              type='text'
+              name='gravatarEmail'
+              value={gravatarEmail}
+              onChange={this.handleChange}
+              className='form-control'
+            >
+              <span className='fs-4'>E-mail</span>
+            </Input>
+            <div className='d-flex justify-content-center mt-4 gap-4 teste'>
+              <button
+                className={disabled ? 'disabled-start' : 'start-btn'}
+                onClick={this.handleClick}
+                disabled={disabled}
+              >
+                START
+              </button>
+              <img
+                src={gear}
+                alt='settings'
+                width={45}
+                onClick={this.handleSettings}
+                className='settings-button'
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

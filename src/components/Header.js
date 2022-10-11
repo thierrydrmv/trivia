@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { imageAction } from '../redux/actions';
+import logo from '../assets/TriviaWaveTitle.png';
 
 class Header extends Component {
   state = {
@@ -28,14 +29,19 @@ class Header extends Component {
     const { perfilData } = this.props;
     const { hash } = this.state;
     return (
-      <div>
-        <p data-testid="header-player-name">{ perfilData.name }</p>
+      <div className='container-fluid d-flex justify-content-end p-3 text-white bg-header shadow-lg'>
+        <div className='d-flex flex-column align-items-center w-25'>
+        <img src={logo} alt='logo' width="80%" />
+        <div className='d-flex gap-3'>
+        <p data-testid="header-player-name" className='fs-5'>{ perfilData.name }</p>
+        <p data-testid="header-score" className='fs-5'>Points: { perfilData.score }</p>
+        </div>
         <img
           data-testid="header-profile-picture"
           src={ `https://www.gravatar.com/avatar/${hash}` }
-          alt="perfil"
+          alt="perfil" className='rounded' width={50}
         />
-        <p data-testid="header-score">{ perfilData.score }</p>
+        </div>
       </div>
     );
   }
