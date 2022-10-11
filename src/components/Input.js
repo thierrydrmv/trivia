@@ -3,7 +3,7 @@ import React from 'react';
 
 export default class Input extends React.Component {
   render() {
-    const { onChange, type, value, name, children, datatestid } = this.props;
+    const { onChange, type, value, name, children, datatestid, className } = this.props;
     return (
       <div>
         <label htmlFor={ name }>
@@ -15,6 +15,7 @@ export default class Input extends React.Component {
             name={ name }
             data-testid={ datatestid }
             id={ name }
+            className={ className }
           />
         </label>
       </div>

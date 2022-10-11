@@ -14,21 +14,30 @@ class Ranking extends React.Component {
   }
 
   fetchPlayers = () => {
-    const { state: { name, gravatarAvatar, score } } = this.props;
-    const obj = [{
-      name, gravatarAvatar, score,
-    }];
+    const {
+      state: { name, gravatarAvatar, score },
+    } = this.props;
+    const obj = [
+      {
+        name,
+        gravatarAvatar,
+        score,
+      },
+    ];
     const list = JSON.parse(localStorage.getItem('players'));
     console.log(list);
     if (list) {
       console.log('condicao');
-      return this.setState({
-        playersList: [...list, ...obj],
-      }, () => {
-        const { playersList } = this.state;
-        localStorage.setItem('players', JSON.stringify(playersList));
-        this.sortPlayersList();
-      });
+      return this.setState(
+        {
+          playersList: [...list, ...obj],
+        },
+        () => {
+          const { playersList } = this.state;
+          localStorage.setItem('players', JSON.stringify(playersList));
+          this.sortPlayersList();
+        }
+      );
     }
     console.log('setItem final');
     localStorage.setItem('players', JSON.stringify(obj));
@@ -54,18 +63,23 @@ class Ranking extends React.Component {
   render() {
     const { playersList } = this.state;
     return (
-      <div>
-        <h1 data-testid="ranking-title">Ranking</h1>
-        {playersList.map((e, i) => (
-          <div key={ `player-name-${i}` }>
-            <p data-testid={ `player-name-${i}` }>{e.name}</p>
-            <p data-testid={ `player-score-${i}` }>{e.score}</p>
-            <img src={ e.gravatarAvatar } alt="avatar" />
-          </div>
-        ))}
+      <div className='container vh-100 d-flex flex-column justify-content-center align-items-center'>
+        <h1 data-testid='ranking-title' className='text-light text-shadow'>
+          Ranking
+        </h1>
+        <div className='container d-flex gap-3 flex-wrap align-items-center justify-content-center py-5 border-start rounded w-75 text-center shadow-lg bg-game text-light text-shadow'>
+          {playersList.map((e, i) => (
+            <div key={`player-name-${i}`}>
+              <p data-testid={`player-name-${i}`}>{e.name}</p>
+              <p data-testid={`player-score-${i}`}>{e.score}</p>
+              <img src={e.gravatarAvatar} alt='avatar' className='rounded' />
+            </div>
+          ))}
+        </div>
         <Button
-          datatestid="btn-go-home"
-          onClick={ this.handleClick }
+          datatestid='btn-go-home'
+          onClick={this.handleClick}
+          className='btn btn-dark mt-4'
         >
           Ir para o início!
         </Button>

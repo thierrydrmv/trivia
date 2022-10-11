@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Button from '../components/Button';
 import { scoreAction } from '../redux/actions';
+import hourglass from '../assets/hourglass.gif';
 
 class Game extends Component {
   state = {
@@ -11,7 +12,7 @@ class Game extends Component {
     questions: [],
     index: 0,
     triggerButton: false,
-    timer: 10,
+    timer: 30,
     disabled: false,
   };
 
@@ -44,7 +45,7 @@ class Game extends Component {
       {
         results,
       },
-      () => this.fetchQuestions(),
+      () => this.fetchQuestions()
     );
   };
 
@@ -59,7 +60,7 @@ class Game extends Component {
       (prevState) => ({
         index: prevState.index + 1,
       }),
-      () => this.fetchQuestions(),
+      () => this.fetchQuestions()
     );
   };
 
@@ -82,11 +83,11 @@ class Game extends Component {
     this.setState(
       {
         questions: obj,
-        timer: 10,
+        timer: 30,
         triggerButton: false,
         disabled: false,
       },
-      () => this.handleTimer(),
+      () => this.handleTimer()
     );
   };
 
@@ -109,7 +110,7 @@ class Game extends Component {
         const easyN = 1;
         difficultyAvaliation = easyN;
       }
-      const totalScore = minimumPoints + (timer * difficultyAvaliation);
+      const totalScore = minimumPoints + timer * difficultyAvaliation;
 
       const obj = {
         score: totalScore,
@@ -141,42 +142,79 @@ class Game extends Component {
               triggerButton: true,
             });
           }
-        },
+        }
       );
     }, timerSec);
   };
 
   render() {
-    const { results, index, questions, triggerButton, timer, disabled } = this.state;
+    const { results, index, questions, triggerButton, timer, disabled } =
+      this.state;
     const lastQuestion = 4;
     return (
-      <div>
+      <div className='vh-100'>
         <Header />
         {results.length > 0 && index <= lastQuestion && (
-          <div>
-            <p data-testid="timer">{timer}</p>
-            <p data-testid="question-category">{results[index].category}</p>
-            <p data-testid="question-text">{results[index].question}</p>
-            <div data-testid="answer-options">
+          <div className='container d-flex flex-column align-items-center game-box py-5 border-start rounded w-50 text-center shadow-lg bg-game text-light text-shadow'>
+            <div className='d-flex justify-content-center align-items-center gap-3'>
+              <p data-testid='timer' className='display-2'>
+                {timer}
+              </p>
+              <img src={hourglass} alt='hourglass' width={50} />
+            </div>
+            <p data-testid='question-category' className='fs-2'>
+              {results[index].category}
+            </p>
+            <p data-testid='question-text' className='fs-4'>
+              {results[index].question}
+            </p>
+            <div data-testid='answer-options' className='d-flex gap-3'>
               {questions.map((e) => (
-                <Button
-                  key={ e.indexOfObj }
-                  datatestid={
-                    e.type === 'correct'
-                      ? 'correct-answer'
-                      : `wrong-answer-${e.indexOfObj}`
-                  }
-                  name={ e.type }
-                  className={ triggerButton && e.type }
-                  onClick={ this.handleClick }
-                  disabled={ disabled }
-                >
-                  {e.answer}
-                </Button>
+                <div>
+                  {triggerButton ? (
+                    <Button
+                      key={e.indexOfObj}
+                      datatestid={
+                        e.type === 'correct'
+                          ? 'correct-answer'
+                          : `wrong-answer-${e.indexOfObj}`
+                      }
+                      name={e.type}
+                      className={
+                        triggerButton && e.type === 'correct'
+                          ? 'btn btn-success'
+                          : 'btn btn-danger'
+                      }
+                      onClick={this.handleClick}
+                      disabled={disabled}
+                    >
+                      {e.answer}
+                    </Button>
+                  ) : (
+                    <Button
+                      key={e.indexOfObj}
+                      datatestid={
+                        e.type === 'correct'
+                          ? 'correct-answer'
+                          : `wrong-answer-${e.indexOfObj}`
+                      }
+                      name={e.type}
+                      className='btn btn-secondary'
+                      onClick={this.handleClick}
+                      disabled={disabled}
+                    >
+                      {e.answer}
+                    </Button>
+                  )}
+                </div>
               ))}
             </div>
             {triggerButton && (
-              <Button datatestid="btn-next" onClick={ this.nextQuestion }>
+              <Button
+                datatestid='btn-next'
+                onClick={this.nextQuestion}
+                className='btn btn-dark mt-3'
+              >
                 Next
               </Button>
             )}
