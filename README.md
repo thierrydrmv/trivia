@@ -4,7 +4,7 @@
 
 ## 📝 About
 
-The **Trivia** project is a question and answer game.
+The **Trivia** project is an application of a question and answer game that was developed as a team, made up of 5 people, on the Trybe course.
 
 ## 🚀 Built With
 
